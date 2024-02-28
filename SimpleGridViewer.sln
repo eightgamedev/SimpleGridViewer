@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.8.34525.116
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SimpleGridViewer", "SimpleGridViewer.vcxproj", "{F73894D6-B3FA-48BB-B3CB-BDBFA07BA66E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Release|x64 = Release|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F73894D6-B3FA-48BB-B3CB-BDBFA07BA66E}.Debug|x64.ActiveCfg = Debug|x64
+		{F73894D6-B3FA-48BB-B3CB-BDBFA07BA66E}.Debug|x64.Build.0 = Debug|x64
+		{F73894D6-B3FA-48BB-B3CB-BDBFA07BA66E}.Release|x64.ActiveCfg = Release|x64
+		{F73894D6-B3FA-48BB-B3CB-BDBFA07BA66E}.Release|x64.Build.0 = Release|x64
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {5B1F9710-FB75-48F0-B5E1-AF42A5E9908B}
+	EndGlobalSection
+EndGlobal
