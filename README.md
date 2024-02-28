@@ -2,6 +2,8 @@
 Siv3Dで```Grid<String>```型のデータを可視化するための簡易Viewer。
 スクロールバー付き。
 
+![Screenshot](https://github.com/eightgamedev/SimpleGridViewer/assets/47023171/2816eee7-f450-48b3-9a32-78eeb8383fca)
+
 # ライセンス
 このSimpleGridViewerはMITライセンスを使用しています。詳しくはLICENCEファイルをご確認ください。
 
