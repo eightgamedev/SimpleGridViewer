@@ -62,8 +62,8 @@ namespace SpreadSheet
 			void drawSheetRows() const;
 			void drawCells() const;
 			void drawGridLines() const;
-			Array<int32> m_columnWidths;
 			Array<int32> m_rowHeights;
+			Array<int32> m_columnWidths;
 			Grid<String> m_values;
 			RectF m_viewArea;
 			RectF m_sheetArea;
@@ -73,10 +73,10 @@ namespace SpreadSheet
 			size_t m_firstVisibleColumn = 0;
 			size_t m_lastVisibleRow;
 			size_t m_lastVisibleColumn;
-			Font m_indexFont;
-			Font m_textFont;
 			CellGrid m_cellGrid;
 			Array<String> m_rowNames;
 			Array<String> m_columnNames;
+			Font m_indexFont;
+			Font m_textFont;
 	};
 }
