@@ -9,7 +9,7 @@ void Main()
 	size_t columnCount = 200;
 	size_t rowCount = 200;
 
-	SpreadSheet::SpreadSheetGUI spreadSheetGUI{ {columnCount, rowCount }, { 20, 40 }, { 0, 0 }, true };
+	SpreadSheet::SpreadSheetGUI spreadSheetGUI{ {columnCount, rowCount }, { 20, 40 }, { 0, 0 } };
 
 	Grid<String> values(columnCount, rowCount);
 	Array<String> columnNames = SpreadSheet::AlphabetUtility::GenerateAlphabetArray(columnCount);

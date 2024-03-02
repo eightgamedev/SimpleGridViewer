@@ -45,11 +45,11 @@ namespace SpreadSheet
 	class SpreadSheetGUI
 	{
 		public:
-			SpreadSheetGUI(const Size& sheetSize, const Size& visibleCellSize, const Point& viewPoint, const bool alphabetMode = false);
+			SpreadSheetGUI(const Size& sheetSize, const Size& visibleCellSize, const Point& viewPoint);
+			SpreadSheetGUI(const Size& sheetSize, const Size& visibleCellSize, const Point& viewPoint, const Array<String>& rowNames, const Array<String>& columnNames);
 			void setValues(const Grid<String>& values);
 			String getValue(int32 row, int32 column) const;
 			void setTextFont(const Font& font);
-			void setAlphabetMode(bool alphabetMode);
 			void update();
 			void draw() const;
 		private:
@@ -75,8 +75,8 @@ namespace SpreadSheet
 			size_t m_lastVisibleColumn;
 			Font m_indexFont;
 			Font m_textFont;
-			bool m_alphabetMode;
 			CellGrid m_cellGrid;
-			Array<String> ColumnNames;
+			Array<String> m_rowNames;
+			Array<String> m_columnNames;
 	};
 }

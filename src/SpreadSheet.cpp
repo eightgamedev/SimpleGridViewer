@@ -28,10 +28,35 @@ namespace SpreadSheet
 		return Array<String>(cache.begin(), cache.begin() + index + 1);
 	}
 
-	SpreadSheetGUI::SpreadSheetGUI(const Size& sheetSize, const Size& visibleCellSize, const Point& viewPoint, const bool alphabetMode)
+	SpreadSheetGUI::SpreadSheetGUI(const Size& sheetSize, const Size& visibleCellSize, const Point& viewPoint)
 		: m_indexFont(20)
 		, m_textFont(20)
-		, m_alphabetMode(alphabetMode)
+	{
+		const double sheetWidth = visibleCellSize.x * Config::Cell::Width;
+		const double sheetHeight = visibleCellSize.y * Config::Cell::Height;
+
+		m_sheetArea = RectF{ viewPoint.x, viewPoint.y, sheetWidth + Config::SheetRow::Width, sheetHeight + Config::SheetHeader::Height };
+		m_viewArea = RectF{ m_sheetArea.tl(), m_sheetArea.size + Size{SasaGUI::ScrollBar::Thickness, SasaGUI::ScrollBar::Thickness} };
+		m_columnWidths = Array<int32>(sheetSize.x, Config::Cell::Width);
+		m_rowHeights = Array<int32>(sheetSize.y, Config::Cell::Height);
+		m_cellGrid = CellGrid(m_columnWidths, m_rowHeights);
+		m_values = Grid<String>(sheetSize);
+
+		for (size_t i = 0; i < sheetSize.x; ++i)
+		{
+			m_columnNames.push_back(Format(i));
+		}
+		for (size_t i = 0; i < sheetSize.y; ++i)
+		{
+			m_rowNames.push_back(Format(i));
+		}
+	}
+
+	SpreadSheetGUI::SpreadSheetGUI(const Size& sheetSize, const Size& visibleCellSize, const Point& viewPoint, const Array<String>& rowNames, const Array<String>& columnNames)
+		: m_indexFont(20)
+		, m_textFont(20)
+		, m_rowNames(rowNames)
+		, m_columnNames(columnNames)
 	{
 		const double sheetWidth = visibleCellSize.x * Config::Cell::Width;
 		const double sheetHeight = visibleCellSize.y * Config::Cell::Height;
@@ -42,7 +67,6 @@ namespace SpreadSheet
 		m_rowHeights = Array<int32>(sheetSize.y, Config::Cell::Height);
 		m_cellGrid = CellGrid(m_columnWidths, m_rowHeights);
 		m_values = Grid<String>(sheetSize);
-		ColumnNames = AlphabetUtility::GenerateAlphabetArray(sheetSize.x);
 	}
 
 	void SpreadSheetGUI::setValues(const Grid<String>& values)
@@ -58,11 +82,6 @@ namespace SpreadSheet
 	void SpreadSheetGUI::setTextFont(const Font& font)
 	{
 		m_textFont = font;
-	}
-
-	void SpreadSheetGUI::setAlphabetMode(bool alphabetMode)
-	{
-		m_alphabetMode = alphabetMode;
 	}
 
 	void SpreadSheetGUI::update()
@@ -217,8 +236,8 @@ namespace SpreadSheet
 				continue;
 			}
 			rect.draw(Config::SheetHeader::BackgroundColor);
-			const String columnString = m_alphabetMode ? ColumnNames[column] : Format(column);
-			m_indexFont(columnString).drawAt(rect.center(), Config::SheetHeader::TextColor);
+			const String columnName = m_columnNames[column];
+			m_indexFont(columnName).drawAt(rect.center(), Config::SheetHeader::TextColor);
 		}
 
 		for (size_t column = m_firstVisibleColumn; column <= m_lastVisibleColumn; ++column)
@@ -246,8 +265,8 @@ namespace SpreadSheet
 			}
 
 			rect.draw(Config::SheetRow::BackgroundColor);
-			const String rowString = Format(row);
-			m_indexFont(rowString).drawAt(rect.center(), Config::SheetRow::TextColor);
+			const String rowName = m_rowNames[row];
+			m_indexFont(rowName).drawAt(rect.center(), Config::SheetRow::TextColor);
 		}
 
 		for (size_t row = m_firstVisibleRow; row <= m_lastVisibleRow; ++row)
