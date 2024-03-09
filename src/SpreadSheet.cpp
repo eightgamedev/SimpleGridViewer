@@ -39,6 +39,8 @@ namespace SpreadSheet
 		m_rowHeights = Array<int32>(sheetSize.y, Config::Cell::Height);
 		m_cellGrid = CellGrid(m_columnWidths, m_rowHeights);
 		m_values = Grid<String>(sheetSize);
+		m_lastVisibleRow = getVisibleRowCount() - 1;
+		m_lastVisibleColumn = getVisibleColumnCount() - 1;
 	}
 
 	constexpr size_t DEFAULT_FONT_SIZE = 20;
