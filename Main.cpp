@@ -6,10 +6,10 @@ void Main()
 	Window::Resize(1920, 1009);
 	Scene::SetBackground(Color(34, 116, 71));
 
-	size_t columnCount = 200;
-	size_t rowCount = 200;
+	size_t columnCount = 20;
+	size_t rowCount = 24;
 
-	SpreadSheet::SpreadSheetGUI spreadSheetGUI{ {columnCount, rowCount }, { 20, 40 }, { 0, 0 } };
+	SpreadSheet::SpreadSheetGUI spreadSheetGUI{ {columnCount, rowCount }, { 10, 10 }, { 0, 0 } };
 
 	Grid<String> values(columnCount, rowCount);
 	Array<String> columnNames = SpreadSheet::AlphabetUtility::GenerateAlphabetArray(columnCount);

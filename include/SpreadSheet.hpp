@@ -48,13 +48,16 @@ namespace SpreadSheet
 			SpreadSheetGUI(const Size& sheetSize, const Size& visibleCellSize, const Point& viewPoint);
 			SpreadSheetGUI(const Size& sheetSize, const Size& visibleCellSize, const Point& viewPoint, const Array<String>& rowNames, const Array<String>& columnNames);
 			void setValues(const Grid<String>& values);
-			String getValue(int32 row, int32 column) const;
+			Optional<String> getValue(size_t row, size_t column) const;
 			void setTextFont(const Font& font);
+			SizeF getAreaSize() const noexcept;
 			void update();
 			void draw() const;
 		private:
+			void initialize(const Size& sheetSize, const Size& visibleCellSize, const Point& viewPoint);
 			void updateScrollBar();
-			SizeF getSize() const noexcept;
+			void updateVisibleColumns();
+			void updateVisibleRows();
 			size_t getVisibleRowCount() const;
 			size_t getVisibleColumnCount() const;
 			bool isCellVisible(size_t row, size_t column) const;
