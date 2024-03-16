@@ -46,10 +46,11 @@ namespace SpreadSheet
 	{
 		public:
 			SpreadSheetGUI(const Size& sheetSize, const Size& visibleCellSize, const Point& viewPoint);
-			SpreadSheetGUI(const Size& sheetSize, const Size& visibleCellSize, const Point& viewPoint, const Array<String>& rowNames, const Array<String>& columnNames);
 			void setValues(const Grid<String>& values);
 			Optional<String> getValue(size_t row, size_t column) const;
 			void setTextFont(const Font& font);
+			void setRowNames(const Array<String>& rowNames);
+			void setColumnNames(const Array<String>& columnNames);
 			SizeF getAreaSize() const noexcept;
 			void update();
 			void draw() const;

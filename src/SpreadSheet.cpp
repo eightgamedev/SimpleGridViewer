@@ -61,15 +61,6 @@ namespace SpreadSheet
 		}
 	}
 
-	SpreadSheetGUI::SpreadSheetGUI(const Size& sheetSize, const Size& visibleCellSize, const Point& viewPoint, const Array<String>& rowNames, const Array<String>& columnNames)
-		: m_indexFont(DEFAULT_FONT_SIZE)
-		, m_textFont(DEFAULT_FONT_SIZE)
-		, m_rowNames(rowNames)
-		, m_columnNames(columnNames)
-	{
-		initialize(sheetSize, visibleCellSize, viewPoint);
-	}
-
 	void SpreadSheetGUI::setValues(const Grid<String>& values)
 	{
 		const size_t rowCount = Min(values.height(), m_values.height());
@@ -96,6 +87,16 @@ namespace SpreadSheet
 	void SpreadSheetGUI::setTextFont(const Font& font)
 	{
 		m_textFont = font;
+	}
+
+	void SpreadSheetGUI::setRowNames(const Array<String>& rowNames)
+	{
+		m_rowNames = rowNames;
+	}
+
+	void SpreadSheetGUI::setColumnNames(const Array<String>& columnNames)
+	{
+		m_columnNames = columnNames;
 	}
 
 	void SpreadSheetGUI::update()
