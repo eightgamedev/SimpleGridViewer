@@ -418,7 +418,11 @@ namespace SimpleGridViewer
 
 	void SpreadSheet::drawSelectedRow() const
 	{
-		if (m_selectedRow.has_value() && m_selectedRow.value() < m_cellGrid.getRowCount())
+		if (m_selectedRow.has_value()
+			&& m_selectedRow.value() < m_cellGrid.getRowCount()
+			&& m_firstVisibleRow <= m_selectedRow.value()
+			&& m_selectedRow.value() <= m_lastVisibleRow
+		)
 		{
 			const size_t row = m_selectedRow.value();
 			const Rect rect = Rect{ 0, m_cellGrid.getCellY(row), m_sheetArea.asRect().w, m_rowHeights[row]};
@@ -428,7 +432,11 @@ namespace SimpleGridViewer
 
 	void SpreadSheet::drawSelectedColumn() const
 	{
-		if (m_selectedColumn.has_value() && m_selectedColumn.value() < m_cellGrid.getColumnCount())
+		if (m_selectedColumn.has_value()
+			&& m_selectedColumn.value() < m_cellGrid.getColumnCount()
+			&& m_firstVisibleColumn <= m_selectedColumn.value()
+			&& m_selectedColumn.value() <= m_lastVisibleColumn
+		)
 		{
 			size_t column = m_selectedColumn.value();
 			const Rect rect = Rect{ m_cellGrid.getCellX(column), 0, m_columnWidths[column], m_sheetArea.asRect().h};
