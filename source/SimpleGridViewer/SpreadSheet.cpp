@@ -1,6 +1,6 @@
-﻿# include "SpreadSheet.hpp"
+﻿# include "SimpleGridViewer/SpreadSheet.hpp"
 
-namespace SpreadSheet
+namespace SimpleGridViewer
 {
 	String AlphabetUtility::ToAlphabet(size_t index)
 	{
@@ -28,7 +28,7 @@ namespace SpreadSheet
 		return Array<String>(cache.begin(), cache.begin() + index + 1);
 	}
 
-	void SpreadSheetGUI::initialize(const Size& sheetSize, const Size& visibleCellSize, const Point& viewPoint)
+	void SpreadSheet::initialize(const Size& sheetSize, const Size& visibleCellSize, const Point& viewPoint)
 	{
 		const double sheetWidth = visibleCellSize.x * Config::Cell::Width;
 		const double sheetHeight = visibleCellSize.y * Config::Cell::Height;
@@ -45,7 +45,7 @@ namespace SpreadSheet
 
 	constexpr size_t DEFAULT_FONT_SIZE = 20;
 
-	SpreadSheetGUI::SpreadSheetGUI(const Size& sheetSize, const Size& visibleCellSize, const Point& viewPoint)
+	SpreadSheet::SpreadSheet(const Size& sheetSize, const Size& visibleCellSize, const Point& viewPoint)
 		: m_indexFont(DEFAULT_FONT_SIZE)
 		, m_textFont(DEFAULT_FONT_SIZE)
 	{
@@ -61,7 +61,7 @@ namespace SpreadSheet
 		}
 	}
 
-	void SpreadSheetGUI::setValues(const Grid<String>& values)
+	void SpreadSheet::setValues(const Grid<String>& values)
 	{
 		const size_t rowCount = Min(values.height(), m_values.height());
 		const size_t columnCount = Min(values.width(), m_values.width());
@@ -75,7 +75,7 @@ namespace SpreadSheet
 		}
 	}
 
-	Optional<String> SpreadSheetGUI::getValue(size_t row, size_t column) const
+	Optional<String> SpreadSheet::getValue(size_t row, size_t column) const
 	{
 		if (row < 0 || row >= m_values.height() || column < 0 || column >= m_values.width())
 		{
@@ -84,22 +84,22 @@ namespace SpreadSheet
 		return m_values[row][column];
 	}
 
-	void SpreadSheetGUI::setTextFont(const Font& font)
+	void SpreadSheet::setTextFont(const Font& font)
 	{
 		m_textFont = font;
 	}
 
-	void SpreadSheetGUI::setRowNames(const Array<String>& rowNames)
+	void SpreadSheet::setRowNames(const Array<String>& rowNames)
 	{
 		m_rowNames = rowNames;
 	}
 
-	void SpreadSheetGUI::setColumnNames(const Array<String>& columnNames)
+	void SpreadSheet::setColumnNames(const Array<String>& columnNames)
 	{
 		m_columnNames = columnNames;
 	}
 
-	void SpreadSheetGUI::update()
+	void SpreadSheet::update()
 	{
 		{
 			const Transformer2D verticalScrollBarMat{ Mat3x2::Translate(m_sheetArea.tr()), TransformCursor::Yes };
@@ -124,7 +124,7 @@ namespace SpreadSheet
 		updateVisibleRows();
 	}
 
-	void SpreadSheetGUI::draw() const
+	void SpreadSheet::draw() const
 	{
 		{
 			const Transformer2D sheetHeaderMat{ Mat3x2::Translate(m_sheetArea.x, m_sheetArea.y), TransformCursor::Yes };
@@ -160,7 +160,7 @@ namespace SpreadSheet
 		}
 	}
 
-	void SpreadSheetGUI::updateScrollBar()
+	void SpreadSheet::updateScrollBar()
 	{
 		{
 			const Transformer2D t{ Mat3x2::Translate(m_sheetArea.tr()), TransformCursor::Yes };
@@ -188,24 +188,24 @@ namespace SpreadSheet
 		}
 	}
 
-	SizeF SpreadSheetGUI::getAreaSize() const noexcept
+	SizeF SpreadSheet::getAreaSize() const noexcept
 	{
 		return m_sheetArea.size;
 	}
 
-	void SpreadSheetGUI::updateVisibleColumns()
+	void SpreadSheet::updateVisibleColumns()
 	{
 		m_firstVisibleColumn = Min(m_cellGrid.getColumnCount() - 1, static_cast<size_t>(round(m_horizontalScrollBar.value() / Config::Cell::Width)));
 		m_lastVisibleColumn = Min(m_cellGrid.getColumnCount() - 1, m_firstVisibleColumn + getVisibleColumnCount() - 1);
 	}
 
-	void SpreadSheetGUI::updateVisibleRows()
+	void SpreadSheet::updateVisibleRows()
 	{
 		m_firstVisibleRow = Min(m_cellGrid.getRowCount() - 1, static_cast<size_t>(floor(m_verticalScrollBar.value() / Config::Cell::Height)));
 		m_lastVisibleRow = Min(m_cellGrid.getRowCount() - 1, m_firstVisibleRow + getVisibleRowCount() - 1);
 	}
 
-	size_t SpreadSheetGUI::getVisibleRowCount() const
+	size_t SpreadSheet::getVisibleRowCount() const
 	{
 		size_t count = 0;
 		for (size_t i = 0; i < m_cellGrid.getRowCount(); ++i)
@@ -219,7 +219,7 @@ namespace SpreadSheet
 		return count;
 	}
 
-	size_t SpreadSheetGUI::getVisibleColumnCount() const
+	size_t SpreadSheet::getVisibleColumnCount() const
 	{
 		size_t count = 0;
 		for (size_t i = 0; i < m_cellGrid.getColumnCount(); ++i)
@@ -233,7 +233,7 @@ namespace SpreadSheet
 		return count;
 	}
 
-	bool SpreadSheetGUI::isCellVisible(size_t row, size_t column) const
+	bool SpreadSheet::isCellVisible(size_t row, size_t column) const
 	{
 		if (column < m_firstVisibleColumn
 		 || column > m_lastVisibleColumn
@@ -245,7 +245,7 @@ namespace SpreadSheet
 		return true;
 	}
 
-	void SpreadSheetGUI::drawSheetHeader() const
+	void SpreadSheet::drawSheetHeader() const
 	{
 		for (size_t column = m_firstVisibleColumn; column <= m_lastVisibleColumn; ++column)
 		{
@@ -272,7 +272,7 @@ namespace SpreadSheet
 		}
 	}
 
-	void SpreadSheetGUI::drawSheetRows() const
+	void SpreadSheet::drawSheetRows() const
 	{
 		for (size_t row = m_firstVisibleRow; row <= m_lastVisibleRow; ++row)
 		{
@@ -301,7 +301,7 @@ namespace SpreadSheet
 		}
 	}
 
-	void SpreadSheetGUI::drawCells() const
+	void SpreadSheet::drawCells() const
 	{
 		for (size_t row = m_firstVisibleRow; row <= m_lastVisibleRow; ++row)
 		{
@@ -326,7 +326,7 @@ namespace SpreadSheet
 		rect.stretched(-1, 0, 0, -1).draw(Config::Cell::HoverColor);
 	}
 
-	void SpreadSheetGUI::drawGridLines() const
+	void SpreadSheet::drawGridLines() const
 	{
 		const int32 width = m_columnWidths[0];
 		const int32 height = m_rowHeights[0];

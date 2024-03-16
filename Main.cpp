@@ -1,5 +1,5 @@
 ﻿# include <Siv3D.hpp> // Siv3D v0.6.14
-# include "SpreadSheet.hpp"
+# include "SimpleGridViewer/SpreadSheet.hpp"
 
 void Main()
 {
@@ -9,10 +9,10 @@ void Main()
 	size_t columnCount = 20;
 	size_t rowCount = 24;
 
-	SpreadSheet::SpreadSheetGUI spreadSheetGUI{ {columnCount, rowCount }, { 10, 10 }, { 0, 0 } };
+	SimpleGridViewer::SpreadSheet spreadSheet{ {columnCount, rowCount }, { 10, 10 }, { 0, 0 } };
 
 	Grid<String> values(columnCount, rowCount);
-	Array<String> columnNames = SpreadSheet::AlphabetUtility::GenerateAlphabetArray(columnCount);
+	Array<String> columnNames = SimpleGridViewer::AlphabetUtility::GenerateAlphabetArray(columnCount);
 
 	for (size_t row = 0; row < rowCount; ++row)
 	{
@@ -22,15 +22,15 @@ void Main()
 		}
 	}
 
-	spreadSheetGUI.setValues(values);
-	spreadSheetGUI.setTextFont(Font(15));
+	spreadSheet.setValues(values);
+	spreadSheet.setTextFont(Font(15));
 
 
 	while (System::Update())
 	{
 		const Transformer2D t{ Mat3x2::Translate(50, 50), TransformCursor::Yes };
-		spreadSheetGUI.update();
+		spreadSheet.update();
 
-		spreadSheetGUI.draw();
+		spreadSheet.draw();
 	}
 }

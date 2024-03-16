@@ -2,7 +2,7 @@
 # include "gridcell/CellGrid.hpp"
 # include "SasaGUI/SasaGUI.hpp"
 
-namespace SpreadSheet
+namespace SimpleGridViewer
 {
 	namespace Config
 	{
@@ -42,10 +42,10 @@ namespace SpreadSheet
 		static Array<String> GenerateAlphabetArray(size_t index);
 	};
 
-	class SpreadSheetGUI
+	class SpreadSheet
 	{
 		public:
-			SpreadSheetGUI(const Size& sheetSize, const Size& visibleCellSize, const Point& viewPoint);
+			SpreadSheet(const Size& sheetSize, const Size& visibleCellSize, const Point& viewPoint);
 			void setValues(const Grid<String>& values);
 			Optional<String> getValue(size_t row, size_t column) const;
 			void setTextFont(const Font& font);
