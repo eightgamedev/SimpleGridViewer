@@ -130,8 +130,23 @@ namespace SimpleGridViewer
 			updateScrollBar();
 		}
 
-		updateVisibleColumns();
 		updateVisibleRows();
+		updateVisibleColumns();
+
+		{
+			const Transformer2D sheetHeaderMat{ Mat3x2::Translate(m_sheetArea.x, m_sheetArea.y), TransformCursor::Yes };
+			{
+				const Transformer2D sheetRowsMat{ Mat3x2::Translate(0, Config::SheetHeader::Height - (static_cast<int>(floor(m_verticalScrollBar.value() / Config::Cell::Height)) * Config::Cell::Height)), TransformCursor::Yes };
+				updateSelectedRow();
+			}
+			{
+				const Transformer2D t{ Mat3x2::Translate(
+									Config::SheetRow::Width
+									- (static_cast<int>(round(m_horizontalScrollBar.value() / Config::Cell::Width) * Config::Cell::Width)), 0),
+									TransformCursor::Yes };
+				updateSelectedColumn();
+			}
+		}
 
 		{
 			const Transformer2D cellsMat{ Mat3x2::Translate(Config::SheetRow::Width - (static_cast<int>(round(m_horizontalScrollBar.value() / Config::Cell::Width) * Config::Cell::Width)), Config::SheetHeader::Height - (static_cast<int>(floor(m_verticalScrollBar.value() / Config::Cell::Height)) * Config::Cell::Height)), TransformCursor::Yes };
@@ -144,6 +159,14 @@ namespace SimpleGridViewer
 		{
 			const Transformer2D sheetHeaderMat{ Mat3x2::Translate(m_sheetArea.x, m_sheetArea.y), TransformCursor::Yes };
 			Rect{ 0, 0, Config::SheetRow::Width, Config::SheetHeader::Height }.draw(Config::SheetHeader::BackgroundColor);
+
+
+			{
+				const Transformer2D cellsMat{ Mat3x2::Translate(Config::SheetRow::Width - (static_cast<int>(round(m_horizontalScrollBar.value() / Config::Cell::Width) * Config::Cell::Width)), Config::SheetHeader::Height - (static_cast<int>(floor(m_verticalScrollBar.value() / Config::Cell::Height)) * Config::Cell::Height)), TransformCursor::Yes };
+				drawCells();
+				drawGridLines();
+			}
+
 			{
 				const Transformer2D t{ Mat3x2::Translate(
 					Config::SheetRow::Width
@@ -152,17 +175,15 @@ namespace SimpleGridViewer
 
 
 				drawSheetHeader();
+				drawSelectedColumn();
 			}
 			{
 				const Transformer2D sheetRowsMat{ Mat3x2::Translate(0, Config::SheetHeader::Height - (static_cast<int>(floor(m_verticalScrollBar.value() / Config::Cell::Height)) * Config::Cell::Height)), TransformCursor::Yes };
 				drawSheetRows();
+				drawSelectedRow();
 			}
 
-			{
-				const Transformer2D cellsMat{ Mat3x2::Translate(Config::SheetRow::Width - (static_cast<int>(round(m_horizontalScrollBar.value() / Config::Cell::Width) * Config::Cell::Width)), Config::SheetHeader::Height - (static_cast<int>(floor(m_verticalScrollBar.value() / Config::Cell::Height)) * Config::Cell::Height)), TransformCursor::Yes };
-				drawCells();
-				drawGridLines();
-			}
+
 		}
 		{
 			const Transformer2D verticalScrollBarMat{ Mat3x2::Translate(m_sheetArea.tr()), TransformCursor::Yes };
@@ -226,9 +247,47 @@ namespace SimpleGridViewer
 		if (m_hoveredCell.has_value() && isCellVisible(m_hoveredCell->y, m_hoveredCell->x) && MouseL.down())
 		{
 			m_selectedCell = m_hoveredCell;
+			m_selectedRow = none;
+			m_selectedColumn = none;
 		}
 	}
 
+	void SpreadSheet::updateSelectedRow()
+	{
+		m_hoveredRow = m_cellGrid.getRowIndex(Cursor::Pos().y);
+		if (not m_hoveredRow.has_value()) return;
+
+		const size_t hoveredRow = m_hoveredRow.value();
+		if (hoveredRow < m_cellGrid.getRowCount()
+			&& m_firstVisibleRow <= hoveredRow && hoveredRow <= m_lastVisibleRow)
+		{
+			Rect rect = Rect{ 0, m_cellGrid.getCellY(hoveredRow), Config::SheetRow::Width, m_rowHeights[hoveredRow] };
+			if (rect.leftClicked())
+			{
+				m_selectedRow = m_hoveredRow;
+				m_selectedCell = none;
+			}
+		}
+	}
+
+	void SpreadSheet::updateSelectedColumn()
+	{
+		m_hoveredColumn = m_cellGrid.getColumnIndex(Cursor::Pos().x);
+		if (not m_hoveredColumn.has_value()) return;
+
+		const size_t hoveredColumn = m_hoveredColumn.value();
+		if (hoveredColumn < m_cellGrid.getColumnCount()
+						&& m_firstVisibleColumn <= hoveredColumn && hoveredColumn <= m_lastVisibleColumn)
+		{
+			Rect rect = Rect{ m_cellGrid.getCellX(hoveredColumn), 0, m_columnWidths[hoveredColumn], Config::SheetHeader::Height };
+			if (rect.leftClicked())
+			{
+				m_selectedColumn = m_hoveredColumn;
+				m_selectedCell = none;
+			}
+		}
+	}
+	
 	size_t SpreadSheet::getVisibleRowCount() const
 	{
 		size_t count = 0;
@@ -351,6 +410,26 @@ namespace SimpleGridViewer
 		{
 			const Rect rect = m_cellGrid.getCellRect(m_selectedCell->x, m_selectedCell->y);
 			rect.stretched(-1, 0, 0, -1).drawFrame(1, 0, Config::Cell::SelectedColor);
+		}
+	}
+
+	void SpreadSheet::drawSelectedRow() const
+	{
+		if (m_selectedRow.has_value() && m_selectedRow.value() < m_cellGrid.getRowCount())
+		{
+			const size_t row = m_selectedRow.value();
+			const Rect rect = Rect{ 0, m_cellGrid.getCellY(row), m_sheetArea.asRect().w, m_rowHeights[row]};
+			rect.drawFrame(1, 0, Config::SheetRow::SelectedColor);
+		}
+	}
+
+	void SpreadSheet::drawSelectedColumn() const
+	{
+		if (m_selectedColumn.has_value() && m_selectedColumn.value() < m_cellGrid.getColumnCount())
+		{
+			size_t column = m_selectedColumn.value();
+			const Rect rect = Rect{ m_cellGrid.getCellX(column), 0, m_columnWidths[column], m_sheetArea.asRect().h};
+			rect.drawFrame(1, 0, Config::SheetHeader::SelectedColor);
 		}
 	}
 

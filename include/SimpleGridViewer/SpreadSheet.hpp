@@ -11,6 +11,8 @@ namespace SimpleGridViewer
 			inline constexpr static int32 Height = 20;
 			inline constexpr static ColorF BackgroundColor = Palette::Lightgray;
 			inline constexpr static ColorF TextColor = Palette::Black;
+			inline constexpr static ColorF HoveredColor{ 0.9, 0.9, 0.9, 0.5 };
+			inline constexpr static ColorF SelectedColor{ 1.0, 0.0, 0.0, 1.0 };
 		};
 
 		struct SheetRow
@@ -18,6 +20,8 @@ namespace SimpleGridViewer
 			inline constexpr static int32 Width = 60;
 			inline constexpr static ColorF BackgroundColor = Palette::Lightgray;
 			inline constexpr static ColorF TextColor = Palette::Black;
+			inline constexpr static ColorF HoveredColor{ 0.9, 0.9, 0.9, 0.5 };
+			inline constexpr static ColorF SelectedColor{ 1.0, 0.0, 0.0, 1.0 };
 		};
 
 		struct Cell
@@ -63,12 +67,16 @@ namespace SimpleGridViewer
 			void updateVisibleColumns();
 			void updateVisibleRows();
 			void updateCells();
+			void updateSelectedRow();
+			void updateSelectedColumn();
 			size_t getVisibleRowCount() const;
 			size_t getVisibleColumnCount() const;
 			bool isCellVisible(size_t row, size_t column) const;
 			void drawSheetHeader() const;
 			void drawSheetRows() const;
 			void drawCells() const;
+			void drawSelectedRow() const;
+			void drawSelectedColumn() const;
 			void drawGridLines() const;
 			Array<int32> m_rowHeights;
 			Array<int32> m_columnWidths;
@@ -88,5 +96,9 @@ namespace SimpleGridViewer
 			Font m_textFont;
 			Optional<Point> m_hoveredCell;
 			Optional<Point> m_selectedCell;
+			Optional<size_t> m_hoveredRow;
+			Optional<size_t> m_hoveredColumn;
+			Optional<size_t> m_selectedRow;
+			Optional<size_t> m_selectedColumn;
 	};
 }
