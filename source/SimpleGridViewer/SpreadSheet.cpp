@@ -43,11 +43,9 @@ namespace SimpleGridViewer
 		m_lastVisibleColumn = getVisibleColumnCount() - 1;
 	}
 
-	constexpr size_t DEFAULT_FONT_SIZE = 20;
-
 	SpreadSheet::SpreadSheet(const Size& sheetSize, const Size& visibleCellSize, const Point& viewPoint)
-		: m_indexFont(DEFAULT_FONT_SIZE)
-		, m_textFont(DEFAULT_FONT_SIZE)
+		: m_indexFont(Config::Font::IndexSize)
+		, m_textFont(Config::Font::TextSize)
 	{
 		initialize(sheetSize, visibleCellSize, viewPoint);
 
@@ -82,6 +80,11 @@ namespace SimpleGridViewer
 			return none;
 		}
 		return m_values[row][column];
+	}
+
+	void SpreadSheet::setIndexFont(const Font& font)
+	{
+		m_indexFont = font;
 	}
 
 	void SpreadSheet::setTextFont(const Font& font)
