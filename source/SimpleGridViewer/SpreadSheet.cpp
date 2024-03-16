@@ -99,6 +99,16 @@ namespace SimpleGridViewer
 		m_columnNames = columnNames;
 	}
 
+	Optional<Point> SpreadSheet::getHoveredCell() const noexcept
+	{
+		return m_hoveredCell;
+	}
+
+	Optional<Point> SpreadSheet::getSelectedCell() const noexcept
+	{
+		return m_selectedCell;
+	}
+
 	void SpreadSheet::update()
 	{
 		{
@@ -122,6 +132,11 @@ namespace SimpleGridViewer
 
 		updateVisibleColumns();
 		updateVisibleRows();
+
+		{
+			const Transformer2D cellsMat{ Mat3x2::Translate(Config::SheetRow::Width - (static_cast<int>(round(m_horizontalScrollBar.value() / Config::Cell::Width) * Config::Cell::Width)), Config::SheetHeader::Height - (static_cast<int>(floor(m_verticalScrollBar.value() / Config::Cell::Height)) * Config::Cell::Height)), TransformCursor::Yes };
+			updateCells();
+		}
 	}
 
 	void SpreadSheet::draw() const
@@ -203,6 +218,15 @@ namespace SimpleGridViewer
 	{
 		m_firstVisibleRow = Min(m_cellGrid.getRowCount() - 1, static_cast<size_t>(floor(m_verticalScrollBar.value() / Config::Cell::Height)));
 		m_lastVisibleRow = Min(m_cellGrid.getRowCount() - 1, m_firstVisibleRow + getVisibleRowCount() - 1);
+	}
+
+	void SpreadSheet::updateCells()
+	{
+		m_hoveredCell = m_cellGrid.getCellIndex(Cursor::Pos());
+		if (m_hoveredCell.has_value() && isCellVisible(m_hoveredCell->y, m_hoveredCell->x) && MouseL.down())
+		{
+			m_selectedCell = m_hoveredCell;
+		}
 	}
 
 	size_t SpreadSheet::getVisibleRowCount() const
@@ -317,13 +341,17 @@ namespace SimpleGridViewer
 			}
 		}
 
-		const Optional<Point> cell = m_cellGrid.getCellIndex(Cursor::Pos());
-		if (not cell.has_value() || !isCellVisible(cell->y, cell->x))
+		if (m_hoveredCell.has_value() && isCellVisible(m_hoveredCell->y, m_hoveredCell->x))
 		{
-				return;
+			const Rect rect = m_cellGrid.getCellRect(m_hoveredCell->x, m_hoveredCell->y);
+			rect.stretched(-1, 0, 0, -1).draw(Config::Cell::HoveredColor);
 		}
-		const Rect rect = m_cellGrid.getCellRect(cell->x, cell->y);
-		rect.stretched(-1, 0, 0, -1).draw(Config::Cell::HoverColor);
+		
+		if (m_selectedCell.has_value() && isCellVisible(m_selectedCell->y, m_selectedCell->x))
+		{
+			const Rect rect = m_cellGrid.getCellRect(m_selectedCell->x, m_selectedCell->y);
+			rect.stretched(-1, 0, 0, -1).drawFrame(1, 0, Config::Cell::SelectedColor);
+		}
 	}
 
 	void SpreadSheet::drawGridLines() const

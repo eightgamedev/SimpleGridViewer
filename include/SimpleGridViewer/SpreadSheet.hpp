@@ -25,7 +25,8 @@ namespace SimpleGridViewer
 			inline constexpr static int32 Height = 20;
 			inline constexpr static int32 Width = 80;
 			inline constexpr static ColorF BackgroundColor = Palette::White;
-			inline constexpr static ColorF HoverColor{ 0.9, 0.9, 0.9, 0.5 };
+			inline constexpr static ColorF HoveredColor{ 0.9, 0.9, 0.9, 0.5 };
+			inline constexpr static ColorF SelectedColor{ 1.0, 0.0, 0.0, 1.0 };
 			inline constexpr static ColorF TextColor = Palette::Black;
 		};
 
@@ -52,6 +53,8 @@ namespace SimpleGridViewer
 			void setRowNames(const Array<String>& rowNames);
 			void setColumnNames(const Array<String>& columnNames);
 			SizeF getAreaSize() const noexcept;
+			Optional<Point> getHoveredCell() const noexcept;
+			Optional<Point> getSelectedCell() const noexcept;
 			void update();
 			void draw() const;
 		private:
@@ -59,6 +62,7 @@ namespace SimpleGridViewer
 			void updateScrollBar();
 			void updateVisibleColumns();
 			void updateVisibleRows();
+			void updateCells();
 			size_t getVisibleRowCount() const;
 			size_t getVisibleColumnCount() const;
 			bool isCellVisible(size_t row, size_t column) const;
@@ -82,5 +86,7 @@ namespace SimpleGridViewer
 			Array<String> m_columnNames;
 			Font m_indexFont;
 			Font m_textFont;
+			Optional<Point> m_hoveredCell;
+			Optional<Point> m_selectedCell;
 	};
 }

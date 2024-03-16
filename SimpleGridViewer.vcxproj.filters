@@ -136,6 +136,24 @@
     <Filter Include="Resource Files\engine\font\min">
       <UniqueIdentifier>{1b103960-f11a-4515-b4f1-f59333ce00d9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\SimpleGridViewer">
+      <UniqueIdentifier>{9fc10ddb-3f59-4ec0-8d22-103876b9755b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\SimpleGridViewer">
+      <UniqueIdentifier>{e8e00452-7054-456a-aa9d-9af3a52f020a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\SasaGUI">
+      <UniqueIdentifier>{2af7fa93-de9a-474b-b2a7-df0f338672fd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\gridcell">
+      <UniqueIdentifier>{98598b3e-adca-4e10-8dda-dbf4e259dccc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\SasaGUI">
+      <UniqueIdentifier>{1d17715d-9511-44e4-a4f4-95cc75904dfb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\gridcell">
+      <UniqueIdentifier>{4d9042c3-58a9-44d1-9332-30f48da3e83e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -144,17 +162,17 @@
     <ClCompile Include="stdafx.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\SpreadSheet.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="source\SimpleGridViewer\SpreadSheet.cpp">
+      <Filter>Source Files\SimpleGridViewer</Filter>
     </ClCompile>
-    <ClCompile Include="src\SasaGUI\SasaGUI.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="source\gridcell\CellGrid.cpp">
+      <Filter>Source Files\gridcell</Filter>
     </ClCompile>
-    <ClCompile Include="src\gridcell\CellGrid.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="source\gridcell\GuiGridAxis.cpp">
+      <Filter>Source Files\gridcell</Filter>
     </ClCompile>
-    <ClCompile Include="src\gridcell\GuiGridAxis.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="source\SasaGUI\SasaGUI.cpp">
+      <Filter>Source Files\SasaGUI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -821,11 +839,17 @@
     <ClInclude Include="stdafx.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="include\SpreadSheet.hpp">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="include\SimpleGridViewer\SpreadSheet.hpp">
+      <Filter>Header Files\SimpleGridViewer</Filter>
     </ClInclude>
     <ClInclude Include="include\SasaGUI\SasaGUI.hpp">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\SasaGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="include\gridcell\CellGrid.hpp">
+      <Filter>Header Files\gridcell</Filter>
+    </ClInclude>
+    <ClInclude Include="include\gridcell\GuiGridAxis.hpp">
+      <Filter>Header Files\gridcell</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
