@@ -66,6 +66,8 @@ namespace SimpleGridViewer
 		SizeF getAreaSize() const noexcept;
 		Optional<Point> getHoveredCell() const noexcept;
 		Optional<Point> getSelectedCell() const noexcept;
+		Optional<size_t> getSelectedRow() const noexcept;
+		Optional<size_t> getSelectedColumn() const noexcept;
 		void update();
 		void draw() const;
 	private:

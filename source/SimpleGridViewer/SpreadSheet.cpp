@@ -112,6 +112,16 @@ namespace SimpleGridViewer
 		return m_selectedCell;
 	}
 
+	Optional<size_t> SpreadSheet::getSelectedRow() const noexcept
+	{
+		return m_selectedRow;
+	}
+
+	Optional<size_t> SpreadSheet::getSelectedColumn() const noexcept
+	{
+		return m_selectedColumn;
+	}
+
 	void SpreadSheet::update()
 	{
 		{
