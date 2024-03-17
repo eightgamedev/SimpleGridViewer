@@ -399,7 +399,7 @@ namespace SimpleGridViewer
 				}
 				const Rect rect = m_cellGrid.getCellRect(column, row);
 				rect.draw(Config::Cell::BackgroundColor);
-				m_textFont(m_values[row][column]).draw(Arg::leftCenter = m_cellGrid.getCellRect(column, row).leftCenter().movedBy(5, 0), Config::Cell::TextColor);
+				m_textFont(m_values[row][column]).draw(m_cellGrid.getCellRect(column, row).stretched(-5, 0), Config::Cell::TextColor);
 			}
 		}
 
